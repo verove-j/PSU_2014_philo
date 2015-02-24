@@ -5,10 +5,10 @@
 ## Login   <gazzol_j@epitech.net>
 ## 
 ## Started on  Mon Feb 23 09:32:08 2015 julien gazzola
-## Last update Tue Feb 24 11:00:01 2015 Jordan Verove
+## Last update Tue Feb 24 13:37:24 2015 julien gazzola
 ##
 
-CC	=	gcc
+CC	=	gcc -g3
 
 RM	=	rm -f
 

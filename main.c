@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Mon Feb 23 09:36:12 2015 julien gazzola
-** Last update Tue Feb 24 13:18:42 2015 Jordan Verove
+** Last update Tue Feb 24 13:55:58 2015 julien gazzola
 */
 
 #include <stdio.h>
@@ -24,23 +24,29 @@ t_philo			**create_philo()
   int			i;
 
   i = 0;
-  if ((philo = malloc(sizeof(philo) * 7)) == NULL)
+  printf("ici ca marche\n");
+  if ((philo = malloc(sizeof(*philo) * 7)) == NULL)
     return (NULL);
-  while (i != 7)
+  printf("apres malloc ca marche\n");
+  while (i < 7)
     {
       if ((philo[i] = malloc(sizeof(philo))) == NULL)
 	return (NULL);
-      philo[0][i].id = i + 1;
-      philo[0][i].rice = 50;
-      if (pthread_create(&(philo[0][i].thread), NULL, philosopher, &philo[0][i]))
+      printf("a chaque malloc ca marche\n");
+      philo[i]->id = (i + 1);
+      philo[i]->rice = 50;
+      if (pthread_create(&(philo[i]->thread), NULL, philosopher, &philo[i]))
 	return (NULL);
+      printf("apres la creation du thread ca marche\n");
       i++;
     }
   i = 0;
   while (i != 7)
     {
-      if (pthread_join(philo[0][i++].thread, NULL))
+      if (pthread_join(philo[i]->thread, NULL))
 	return (NULL);
+      printf("i = %d\n", i);
+      i++;
     }
   return (philo);
 }
@@ -69,9 +75,12 @@ int			main()
   pthread_mutex_t	*mutex_tab;
 
   i = 0;
+  printf("pipi\n");
   if ((tab = create_philo()) == NULL)
     return (-1);
+  printf("caca\n");
   if ((mutex_tab = create_mutex_tab()) == NULL)
     return (0);
+  printf("prout\n");
   return (0);
 }
