@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Tue Feb 24 09:20:01 2015 julien gazzola
-** Last update Tue Feb 24 10:58:45 2015 Jordan Verove
+** Last update Tue Feb 24 16:04:40 2015 julien gazzola
 */
 
 #ifndef PHILO_H_
@@ -20,6 +20,7 @@ typedef struct		s_philo
   pthread_mutex_t	*mutex_left;
   pthread_mutex_t	*mutex_right;
   int			rice;
+  int			state;
 }			t_philo;
 
 #endif	/* !PHILO_H_ */
