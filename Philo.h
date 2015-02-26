@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Tue Feb 24 09:20:01 2015 julien gazzola
-** Last update Thu Feb 26 09:54:17 2015 Jordan Verove
+** Last update Thu Feb 26 15:25:39 2015 Jordan Verove
 */
 
 #ifndef PHILO_H_

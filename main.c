@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Mon Feb 23 09:36:12 2015 julien gazzola
-** Last update Thu Feb 26 11:00:11 2015 Jordan Verove
+** Last update Thu Feb 26 17:36:30 2015 Jordan Verove
 */
 
 #include <stdio.h>
@@ -19,8 +19,9 @@ void	*take_cs(t_philo *philo)
 {
   if ((philo->id % 2) == 0 && philo->rice != 0)
     {
-      if (pthread_mutex_trylock(&mutex_tab[philo->id]) == 0)
+      if (pthread_mutex_trylock(&mutex_tab[philo->id % 7]) == 0)
 	philo->left = 1;
+      sleep(1);
       if (pthread_mutex_trylock(&mutex_tab[philo->id - 1]) == 0)
 	philo->right = 1;
     }
@@ -28,14 +29,14 @@ void	*take_cs(t_philo *philo)
     {
       if (pthread_mutex_trylock(&mutex_tab[philo->id - 1]) == 0)
 	philo->right = 1;
-      if (pthread_mutex_trylock(&mutex_tab[philo->id]) == 0)
+      if (pthread_mutex_trylock(&mutex_tab[philo->id % 7]) == 0)
 	philo->left = 1;
     }
 }
 
 void			unlock_mutex_tab(t_philo *philo)
 {
-  if (pthread_mutex_unlock(&mutex_tab[philo->id]) == 0)
+  if (pthread_mutex_unlock(&mutex_tab[philo->id % 7]) == 0)
     philo->left = 0;
   if (pthread_mutex_unlock(&mutex_tab[philo->id - 1]) == 0)
     philo->right = 0;
@@ -47,12 +48,12 @@ void			eat(t_philo *philo)
 
   if (philo->left == 1 && philo->right == 1)
     {
-      pthread_mutex_lock(&mutex);
       philo->state = TIRED;
       philo->rice -= 10;
+      pthread_mutex_lock(&mutex);
       total_rice -= 10;
       printf("philo rice[%d] : %d\ntotal rice :%d\n", philo->id, philo->rice, total_rice);
-      //unlock_mutex_tab(philo);
+      //      unlock_mutex_tab(philo);
       pthread_mutex_unlock(&mutex);
     }
 }
@@ -68,9 +69,10 @@ void			*philosopher(void *arg)
 	take_cs(philo);
       philo->state == HUNGRY;
       eat(philo);
-      unlock_mutex_tab(philo);
+      // printf("PHILO[%d]: __ left : %c ------- right : %c\n", philo->id, philo->left, philo->right);
       sleep(1);
-   }
+      unlock_mutex_tab(philo);
+    }
   return;
 }
 
