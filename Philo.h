@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Tue Feb 24 09:20:01 2015 julien gazzola
-** Last update Tue Feb 24 16:04:40 2015 julien gazzola
+** Last update Thu Feb 26 09:54:17 2015 Jordan Verove
 */
 
 #ifndef PHILO_H_
@@ -13,14 +13,20 @@
 
 # include <pthread.h>
 
+typedef enum		e_state
+  {
+    HUNGRY,
+    TIRED
+  }			t_state;
+  
 typedef struct		s_philo
 {
   pthread_t		thread;
   int			id;
-  pthread_mutex_t	*mutex_left;
-  pthread_mutex_t	*mutex_right;
+  char			left;
+  char			right;
   int			rice;
-  int			state;
+  t_state      		state;
 }			t_philo;
 
 #endif	/* !PHILO_H_ */
