@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Mon Feb 23 09:36:12 2015 julien gazzola
-** Last update Fri Feb 27 12:01:02 2015 Jordan Verove
+** Last update Fri Feb 27 14:20:21 2015 Jordan Verove
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@ void		print_philo_state(t_philo *philo)
     i = i + 1;
 }
 
-void	*take_cs(t_philo *philo)
+void	take_cs(t_philo *philo)
 {
   if ((philo->id % 2) == 0 && philo->rice != 0)
     {
@@ -53,11 +53,7 @@ void	*take_cs(t_philo *philo)
 }
 
 void			unlock_mutex_tab(t_philo *philo)
-{/*
-  if (pthread_mutex_unlock(&mutex_tab[philo->id % 7]) == 0)
-    philo->left = 0;
-  if (pthread_mutex_unlock(&mutex_tab[philo->id - 1]) == 0)
-  philo->right = 0;*/
+{
   if (philo->left == 1)
     {
       philo->left = 0;
@@ -81,6 +77,7 @@ void			eat(t_philo *philo)
       pthread_mutex_lock(&mutex);
       total_rice -= 10;
       pthread_mutex_unlock(&mutex);
+      // unlock_mutex_tab(philo);
     }
 }
 
