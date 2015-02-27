@@ -5,7 +5,7 @@
 ** Login   <gazzol_j@epitech.net>
 ** 
 ** Started on  Mon Feb 23 09:36:12 2015 julien gazzola
-** Last update Thu Feb 26 19:01:44 2015 Jordan Verove
+** Last update Fri Feb 27 11:20:45 2015 Jordan Verove
 */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ void	*take_cs(t_philo *philo)
 
 void			unlock_mutex_tab(t_philo *philo)
 {
-  if (pthread_mutex_unlock(&mutex_tab[philo->id]) == 0)
+  if (pthread_mutex_unlock(&mutex_tab[philo->id % 7]) == 0)
     philo->left = 0;
   if (pthread_mutex_unlock(&mutex_tab[philo->id - 1]) == 0)
     philo->right = 0;
@@ -69,11 +69,11 @@ void			eat(t_philo *philo)
     {
       philo->state = TIRED;
       philo->rice -= 10;
-      // pthread_mutex_lock(&mutex);
+      pthread_mutex_lock(&mutex);
       total_rice -= 10;
       //      printf("philo rice[%d] : %d\ntotal rice :%d\n", philo->id, philo->rice, total_rice);
       //unlock_mutex_tab(philo);
-      // pthread_mutex_unlock(&mutex);
+      pthread_mutex_unlock(&mutex);
     }
 }
 
@@ -82,9 +82,11 @@ void			*philosopher(void *arg)
   t_philo		*philo;
 
   philo = arg;
+  //  if (philo->rice == 0)
+  //    printf("Philo : %d - state : sleep - rice : %d\n", philo->id, philo->rice);
   while (total_rice != 0)
     {
-      if (philo->left == 0 && philo->right == 0)
+      if (philo->left == 0 && philo->right == 0 && philo->rice != 0)
 	take_cs(philo);
       philo->state == HUNGRY;
       eat(philo);
