@@ -1,21 +1,18 @@
 /*
-** main.c for philosophe in /home/gazzol_j/rendu/PSU_2014_philo
+** philo.c for philo in /home/gazzol_j/rendu/PSU_2014_philo
 ** 
 ** Made by julien gazzola
 ** Login   <gazzol_j@epitech.net>
 ** 
-** Started on  Mon Feb 23 09:36:12 2015 julien gazzola
-** Last update Fri Feb 27 14:20:21 2015 Jordan Verove
+** Started on  Fri Feb 27 14:31:46 2015 julien gazzola
+** Last update Fri Feb 27 14:47:12 2015 julien gazzola
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "Philo.h"
 
-int		total_rice = 350;
-pthread_mutex_t	*mutex_tab;
-
-void		print_philo_state(t_philo *philo)
+static void		print_philo_state(t_philo *philo)
 {
   static int	i = 0;
   
@@ -34,7 +31,7 @@ void		print_philo_state(t_philo *philo)
     i = i + 1;
 }
 
-void	take_cs(t_philo *philo)
+static void		take_cs(t_philo *philo)
 {
   if ((philo->id % 2) == 0 && philo->rice != 0)
     {
@@ -52,7 +49,7 @@ void	take_cs(t_philo *philo)
     }
 }
 
-void			unlock_mutex_tab(t_philo *philo)
+static void		unlock_mutex_tab(t_philo *philo)
 {
   if (philo->left == 1)
     {
@@ -66,7 +63,7 @@ void			unlock_mutex_tab(t_philo *philo)
     }
 }
 
-void			eat(t_philo *philo)
+static void		eat(t_philo *philo)
 {
   pthread_mutex_t	mutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -77,7 +74,6 @@ void			eat(t_philo *philo)
       pthread_mutex_lock(&mutex);
       total_rice -= 10;
       pthread_mutex_unlock(&mutex);
-      // unlock_mutex_tab(philo);
     }
 }
 
@@ -97,62 +93,4 @@ void			*philosopher(void *arg)
       unlock_mutex_tab(philo);
     }
   return;
-}
-
-t_philo			**create_philo()
-{
-  t_philo		**philo;
-  int			i;
-
-  i = 0;
-  if ((philo = malloc(sizeof(t_philo*) * 7)) == NULL)
-    return (NULL);
-  while (i != 7)
-    {
-      if ((philo[i] = malloc(sizeof(t_philo))) == NULL)
-	return (NULL);
-      philo[i]->id = (i + 1);
-      philo[i]->rice = 50;
-      philo[i]->state = HUNGRY;
-      philo[i]->left = 0;
-      philo[i]->right = 0;
-      if (pthread_create(&(philo[i]->thread), NULL, philosopher, philo[i]))
-	return (NULL);
-      ++i;
-    }
-  i = 0;
-  while (i != 7)
-    if (pthread_join(philo[i++]->thread, NULL))
-      return (NULL);
-  return (philo);
-}
-
-pthread_mutex_t		*create_mutex_tab()
-{
-  pthread_mutex_t	*tab;
-  int			i;
-
-  i = 0;
-  if ((tab = malloc(7 *sizeof(pthread_mutex_t))) == NULL)
-    return (NULL);
-  while (i != 7)
-    {
-      if (pthread_mutex_init(&tab[i], NULL))
-	return (NULL);
-      i = i + 1;
-    }
-  return (tab);
-}
-
-int			main()
-{
-  t_philo		**tab;
-  int			i;
-
-  i = 0;
-  if ((mutex_tab = create_mutex_tab()) == NULL)
-    return (0);
-  if ((tab = create_philo()) == NULL)
-    return (-1);
-  return (0);
 }

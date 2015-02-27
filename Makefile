@@ -5,7 +5,7 @@
 ## Login   <gazzol_j@epitech.net>
 ## 
 ## Started on  Mon Feb 23 09:32:08 2015 julien gazzola
-## Last update Tue Feb 24 13:37:24 2015 julien gazzola
+## Last update Fri Feb 27 14:38:34 2015 julien gazzola
 ##
 
 CC	=	gcc -g3
@@ -14,7 +14,8 @@ RM	=	rm -f
 
 NAME	=	philo
 
-SRC	=	main.c
+SRC	=	init.c \
+		philo.c
 
 LDFLAGS	=	-lpthread -Wall -Wextra -Werror -pedantic -I. -ansi
 
